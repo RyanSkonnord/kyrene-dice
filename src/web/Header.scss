@@ -1,0 +1,22 @@
+header {
+    font-weight: bold;
+    text-align: center;
+
+    a {
+        color: inherit;
+        text-decoration: inherit;
+    }
+
+    .appTitle {
+        font-size: x-large;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-style: italic;
+        padding-bottom: 12px;
+    }
+
+    .appBlurb {
+        font-size: small;
+        padding-left: 25%;
+        padding-right: 25%;
+    }
+}

@@ -1,0 +1,18 @@
+.GlobalPreferencesPanel {
+    border: 1px solid gray;
+    margin-bottom: 12px;
+    border-radius: 4px;
+
+    .interior {
+        margin: 12px;
+
+        .visibilityButton {
+            margin-bottom: 12px;
+        }
+    }
+
+    fieldset {
+        display: flex;
+        flex-direction: column;
+    }
+}

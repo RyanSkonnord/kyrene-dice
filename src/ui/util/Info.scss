@@ -1,0 +1,9 @@
+.Info {
+    & a {
+        color: blue;
+        font-size: large;
+        // font-variant-position: super;
+        padding-left: 4px;
+        float: right;
+    }
+}

@@ -1,0 +1,22 @@
+.Roll {
+    margin: 8px;
+    padding: 8px;
+    border: 1px solid black;
+    border-radius: 8px;
+    background-color: ivory;
+
+    display: flex;
+    flex-direction: row;
+}
+
+.diceTray {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.diceRow {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}

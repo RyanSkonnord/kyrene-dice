@@ -1,0 +1,26 @@
+footer {
+    padding: 16px 0;
+    font-size: small;
+    text-align: center;
+
+    a {
+        color: lightblue;
+    }
+
+    .FooterNav {
+        font-size: medium;
+        font-weight: bold;
+
+        a {
+            text-decoration: inherit;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .navLinkBuffer {
+        padding: 0 4px;
+    }
+}

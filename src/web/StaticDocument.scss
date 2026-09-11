@@ -1,0 +1,34 @@
+.StaticDocument {
+    .statusIndicator {
+        font-weight: bold;
+
+        &[role="alert"] {
+            color: pink;
+        }
+    }
+
+    .statusIndicator,
+    .contentContainer {
+        margin-left: 2%;
+        margin-right: 2%;
+
+        display: flex;
+        justify-content: center;
+    }
+
+    article {
+        padding: 2%;
+        max-width: 960px;
+        border-radius: 16px;
+
+        background: linear-gradient(180deg, #fffff0 0%, #f0ffff 100%);
+        color: black;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: large;
+
+        pre,
+        code {
+            font-family: Consolas, 'Courier New', Courier, monospace;
+        }
+    }
+}

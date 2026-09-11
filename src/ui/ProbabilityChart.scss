@@ -1,0 +1,56 @@
+.ProbabilityChart {
+    border: 2px inset darkgray;
+    margin: 4px;
+    padding: 4px;
+
+    table {
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        padding: 0 6px 0 6px;
+    }
+
+    .accumulation {
+        border-inline-end: 1px dotted gray;
+    }
+
+    .sectionHeader>th {
+        padding-top: 2px;
+    }
+
+    .sectionMiniheader>th {
+        font-weight: normal;
+        font-size: small;
+    }
+
+    .actualResult {
+        font-weight: bold;
+    }
+
+    .rowIndicator {
+        text-align: center;
+    }
+
+    .result {
+        text-align: left;
+    }
+
+    td.probability,
+    th.probability {
+        text-align: right;
+
+        &.overall {
+            text-align: center;
+        }
+    }
+
+    .failRow {
+        background-color: pink;
+    }
+
+    .successRow {
+        background-color: lightblue;
+    }
+}

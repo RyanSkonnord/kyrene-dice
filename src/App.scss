@@ -1,0 +1,27 @@
+$spooky-purple: #0b0013;
+$gunmetal: #536267;
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    background: linear-gradient(180deg, $spooky-purple 0%, $gunmetal 50%, $spooky-purple 100%);
+    color: white;
+}
+
+body {
+    padding: 1%;
+}
+
+header,
+footer {
+    padding: 16px;
+
+    a {
+        color: lightblue;
+    }
+}
+
+footer {
+    font-size: small;
+}

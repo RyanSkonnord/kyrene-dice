@@ -1,0 +1,100 @@
+@import "./diceColorScheme.scss";
+
+.DieGraphic {
+    display: grid;
+    justify-items: left;
+    row-gap: 10px;
+
+    .outer {
+        display: grid;
+        grid-template-rows: auto auto auto;
+        align-items: center;
+        justify-items: center;
+        margin-right: 4px;
+    }
+
+    .tagCaption,
+    .effectCaption {
+        font-size: x-small;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    .dieBody {
+        width: 64px;
+        height: 64px;
+        border-radius: 8px;
+        border: 2px solid black;
+        background: slategray;
+        display: grid;
+        place-items: center;
+        padding: 6px;
+        box-sizing: border-box;
+
+        &.hunger {
+            background: $hungerDie;
+
+            & .criticalMiss {
+                background: $criticalMiss;
+                color: white;
+            }
+
+            & .criticalHit {
+                background: $messyCritical;
+                color: black;
+            }
+        }
+
+        &.nightmare {
+            background: purple;
+        }
+
+        &.again {
+            background: $bonus;
+        }
+    }
+
+    .dieFace {
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+        position: relative;
+        display: grid;
+        place-items: center;
+        box-sizing: border-box;
+
+        &.criticalMiss {
+            background: $criticalMiss;
+            color: white;
+        }
+
+        &.miss {
+            background: $miss;
+            color: black;
+        }
+
+        &.hit {
+            background: $hit;
+            color: black;
+        }
+
+        &.criticalHit {
+            background: $cleanCritical;
+            color: black;
+        }
+    }
+
+    .dieNumeral {
+        font-size: 32px;
+        font-weight: 600;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
+
+    .cornerIcon {
+        position: absolute;
+        right: 0px;
+        bottom: 2px;
+        font-size: 12px;
+        line-height: 1;
+    }
+}

@@ -1,0 +1,76 @@
+@import "../diceColorScheme.scss";
+
+.FifthProbabilityTable {
+    .sectionHeader>th {
+        border-bottom: 1px dashed gray;
+    }
+
+    .result {
+        border-right: 1px solid black;
+    }
+
+    .normal {
+        border-left: 1px solid black;
+    }
+
+    .messy .successRow {
+        background-color: orange;
+    }
+}
+
+.GoalViz {
+    display: flex;
+    flex-direction: row;
+}
+
+.GoalBall {
+    .ballOutline {
+        $diameter: 32px;
+        width: $diameter;
+        height: $diameter;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+
+        margin: 2px;
+
+        &.target {
+            border: 2px solid black;
+            background-color: darkslategray;
+        }
+
+        &.excess {
+            border: 2px dotted gray;
+        }
+    }
+
+    .ballFill {
+        width: 75%;
+        // height: 75%;
+
+        .GoalVizShape {
+            stroke: black;
+            stroke-width: 4;
+        }
+
+        &.hit .GoalVizShape {
+            fill: $hit;
+        }
+
+        &.bestial .GoalVizShape {
+            fill: $criticalMiss;
+        }
+
+        &.messy .GoalVizShape {
+            fill: $messyCritical;
+        }
+
+        &.critical .GoalVizShape {
+            fill: $cleanCritical;
+        }
+
+        &.bonus .GoalVizShape {
+            fill: $bonus;
+        }
+    }
+}

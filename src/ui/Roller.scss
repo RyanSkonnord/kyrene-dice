@@ -1,0 +1,40 @@
+@use "../KyreneDice.scss" as base;
+
+.Roller {
+    height: 100%;
+    // flex: 1;
+    display: flex;
+    border: 1px solid black;
+}
+
+.rollSpecPanel {
+    min-width: base.$topLevelPanelWidth;
+    padding: 12px;
+}
+
+.specProbability {
+    display: flex;
+}
+
+.rollListPanel {
+    flex: 1;
+    padding: 0;
+    border-left: 1px solid lightgray;
+
+    min-height: 0;
+
+    .clearRollHistoryButton {
+        margin: 12px 12px 0 12px;
+    }
+
+    .rollList {
+        height: 100%;
+        box-sizing: border-box;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 12px;
+
+        display: flex;
+        flex-direction: column;
+    }
+}
