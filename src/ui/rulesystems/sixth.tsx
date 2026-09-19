@@ -4,6 +4,7 @@ import { RollNumericParameter, RollParameter, RuleSystem } from "../baserules";
 import { ProbabilityReportOutput } from "../ProbabilityChart";
 import { RollReportOutput } from "../Roll";
 import { RollSpec } from "../Roller";
+import { MINUS } from "../util/symbols";
 import { PluralWord } from "../util/words";
 
 export class SixthRuleSystem extends RuleSystem<SixthRollResult, SixthRollCondition> {
@@ -31,16 +32,17 @@ export class SixthRuleSystem extends RuleSystem<SixthRollResult, SixthRollCondit
 
     public get rollOutput(): RollReportOutput<SixthRollResult, SixthRollCondition> {
         return new class extends RollReportOutput<SixthRollResult, SixthRollCondition> {
-            public renderCondition(condition: SixthRollCondition): React.ReactNode {
+            public renderConditionAsPlainText(condition: SixthRollCondition): string {
                 const { totalDice } = condition;
                 if (totalDice === 0) return "Unable to attempt";
-                return (<span>
-                    Rolled {totalDice} {PluralWord.DIE.say(totalDice)}{' '}
-                    (= {condition.baseDicePool} &minus; {condition.difficulty} Difficulty)
-                </span>);
+                const tokens = [
+                    "Rolled", totalDice, PluralWord.DIE.say(totalDice),
+                    "(=", condition.baseDicePool, MINUS, condition.difficulty, "Difficulty)",
+                ];
+                return tokens.join(' ');
             }
 
-            public renderResult(report: RollReport<SixthRollResult>, condition: SixthRollCondition): React.ReactNode {
+            public renderResultAsPlainText(report: RollReport<SixthRollResult>, condition: SixthRollCondition): string {
                 return SixthRuleSystem.renderResult(report.result, condition);
             }
         }();

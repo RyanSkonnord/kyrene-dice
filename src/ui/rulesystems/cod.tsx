@@ -85,7 +85,7 @@ export class CodRuleSystem extends RuleSystem<CodRollResult, CodRollCondition> {
         return new CodRollCondition(dicePool, modifier, criticalHitThreshold);
     }
 
-    private static renderResult(result: CodRollResult): string {
+    private static renderResultAsPlainText(result: CodRollResult): string {
         if (result.isDramaticFailure()) return "Dramatic Failure";
         if (!result.isSuccessful()) return "Failure";
 
@@ -96,16 +96,18 @@ export class CodRuleSystem extends RuleSystem<CodRollResult, CodRollCondition> {
 
     public get rollOutput(): RollReportOutput<CodRollResult, CodRollCondition> {
         return new class extends RollReportOutput<CodRollResult, CodRollCondition> {
-            public renderCondition(condition: CodRollCondition): React.ReactNode {
+            public renderConditionAsPlainText(condition: CodRollCondition): string {
                 const { actualDicePool } = condition;
-                return (<span>
-                    Rolled {actualDicePool} {condition.isChanceDie() && "chance"}{' '}
-                    {PluralWord.DIE.say(actualDicePool)}
-                </span>);
+                const tokens = [
+                    "Rolled", actualDicePool,
+                    (condition.isChanceDie() ? "chance" : null),
+                    PluralWord.DIE.say(actualDicePool),
+                ];
+                return tokens.filter(t => t !== null).join(' ');
             }
 
-            public renderResult(report: RollReport<CodRollResult>): React.ReactNode {
-                return CodRuleSystem.renderResult(report.result);
+            public renderResultAsPlainText(report: RollReport<CodRollResult>): string {
+                return CodRuleSystem.renderResultAsPlainText(report.result);
             }
         }();
     }
@@ -113,7 +115,7 @@ export class CodRuleSystem extends RuleSystem<CodRollResult, CodRollCondition> {
     public get probabilityOutput(): ProbabilityReportOutput<CodRollResult, CodRollCondition> {
         return new class extends ProbabilityReportOutput<CodRollResult, CodRollCondition> {
             public renderResult(result: CodRollResult): React.ReactNode {
-                return CodRuleSystem.renderResult(result);
+                return CodRuleSystem.renderResultAsPlainText(result);
             }
         }();
     }

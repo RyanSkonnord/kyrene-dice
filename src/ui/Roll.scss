@@ -7,16 +7,24 @@
 
     display: flex;
     flex-direction: row;
-}
 
-.diceTray {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-}
+    .ClipboardExportButton {
+        margin-top: 2px;
+    }
 
-.diceRow {
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
+    .rollProbability {
+        margin-left: 4px;
+    }
+
+    .diceTray {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+    }
+
+    .diceRow {
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+    }
 }

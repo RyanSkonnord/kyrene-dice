@@ -129,7 +129,7 @@ export class ClassicRuleSystem extends RuleSystem<ClassicRollResult, ClassicRoll
         return new ClassicRollCondition(dicePool, difficulty, flags);
     }
 
-    private static renderResult(result: ClassicRollResult, condition: ClassicRollCondition): string {
+    private static renderResultAsPlainText(result: ClassicRollResult, condition: ClassicRollCondition): string {
         if (result.isBotch()) return "Botch";
         if (!result.isSuccessful() && !condition.flags.isDamageRoll) return "Failure";
         return `${result.successCount} ${PluralWord.SUCCESS.say(result.successCount, true)}`;
@@ -137,13 +137,13 @@ export class ClassicRuleSystem extends RuleSystem<ClassicRollResult, ClassicRoll
 
     public get rollOutput(): RollReportOutput<ClassicRollResult, ClassicRollCondition> {
         return new class extends RollReportOutput<ClassicRollResult, ClassicRollCondition> {
-            public renderCondition(condition: ClassicRollCondition): React.ReactNode {
+            public renderConditionAsPlainText(condition: ClassicRollCondition): string {
                 const dicePool = condition.totalDice;
                 return `Rolled ${dicePool} ${PluralWord.DIE.say(dicePool)} at difficulty ${condition.difficulty}`;
             }
 
-            public renderResult(report: RollReport<ClassicRollResult>, condition: ClassicRollCondition): React.ReactNode {
-                return ClassicRuleSystem.renderResult(report.result, condition);
+            public renderResultAsPlainText(report: RollReport<ClassicRollResult>, condition: ClassicRollCondition): string {
+                return ClassicRuleSystem.renderResultAsPlainText(report.result, condition);
             }
         }();
     }
@@ -151,7 +151,7 @@ export class ClassicRuleSystem extends RuleSystem<ClassicRollResult, ClassicRoll
     public get probabilityOutput(): ProbabilityReportOutput<ClassicRollResult, ClassicRollCondition> {
         return new class extends ProbabilityReportOutput<ClassicRollResult, ClassicRollCondition> {
             public renderResult(result: ClassicRollResult, condition: ClassicRollCondition): React.ReactNode {
-                return ClassicRuleSystem.renderResult(result, condition);
+                return ClassicRuleSystem.renderResultAsPlainText(result, condition);
             }
         }();
     }

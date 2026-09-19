@@ -53,24 +53,32 @@ export class FifthRuleSystem extends RuleSystem<FifthRollResult, FifthRollCondit
 }
 
 class FifthRollReportOutput extends RollReportOutput<FifthRollResult, FifthRollCondition> {
-    public renderCondition(condition: FifthRollCondition): React.ReactNode {
-        const { totalDice } = condition;
-        return (<span>
-            Rolled {totalDice} {PluralWord.DIE.say(totalDice)}{' '}
-            at difficulty {condition.difficulty} with {condition.hungerDice} Hunger
-        </span>);
+    public renderConditionAsPlainText(condition: FifthRollCondition): string {
+        const { totalDice, difficulty, hungerDice } = condition;
+        const tokens = [
+            "Rolled", totalDice, PluralWord.DIE.say(totalDice),
+            "at difficulty", difficulty, "with", hungerDice, "Hunger",
+        ];
+        return tokens.join(' ');
+    }
+
+    public renderResultAsPlainText(report: RollReport<FifthRollResult>): string {
+        const { result } = report;
+        const { margin, nature } = result;
+        return NATURE_LABELS[nature]
+            + (result.isSuccessful() ? ` with a margin of ${margin}` : '');
     }
 
     public renderResult(report: RollReport<FifthRollResult>, condition: FifthRollCondition): React.ReactNode {
         const { result } = report;
-        const { margin, nature } = result;
+        const { nature } = result;
 
         const nodes = Array.from(condition.buildGoalView(report));
+        const text = this.renderResultAsPlainText(report);
 
         return (<span>
             <GoalViz nodes={nodes} />
-            {NATURE_EMOJIS[nature]} {NATURE_LABELS[nature]}
-            {result.isSuccessful() && ` with a margin of ${margin}`}
+            {NATURE_EMOJIS[nature]} {text}
         </span>);
     }
 }

@@ -1,6 +1,8 @@
 import { DieEffect } from "../../gamerules/dice";
 import { FifthRollNature } from "../../gamerules/rulesystems/fifth";
 
+export const MINUS = "\u2212"; // −
+
 export const DIAMOND_SEPARATOR = "\u2756"; // ❖
 
 export const INCREMENT = "\u25b2"; // ▲

@@ -12,13 +12,33 @@ import { useGlobalPreferences } from "../globalPreference";
 
 
 export abstract class RollReportOutput<R extends RollResult, C extends RollCondition<R>> {
-    public abstract renderCondition(condition: C): React.ReactNode;
+    public abstract renderConditionAsPlainText(condition: C): string;
+
+    public renderCondition(condition: C): React.ReactNode {
+        return this.renderConditionAsPlainText(condition);
+    }
 
     public renderDie(die: DieReport, index: number, condition: C): React.ReactNode {
         return <DieGraphic key={index} die={die} />;
     }
 
-    public abstract renderResult(report: RollReport<R>, condition: C): React.ReactNode;
+    protected renderDiceAsPlainText(dice: Iterable<DieReport>): string {
+        return Array.from(dice).map(die => `[${die.face}]`).join(' ');
+    }
+
+    public abstract renderResultAsPlainText(report: RollReport<R>, condition: C): string;
+
+    public renderResult(report: RollReport<R>, condition: C): React.ReactNode {
+        return this.renderResultAsPlainText(report, condition);
+    }
+
+    public exportResultAsPlainTextBlock(report: RollReport<R>, condition: C): string[] {
+        return [
+            this.renderConditionAsPlainText(condition),
+            this.renderDiceAsPlainText(report.dice),
+            this.renderResultAsPlainText(report, condition),
+        ]
+    }
 }
 
 /**
@@ -85,65 +105,87 @@ export default function Roll({
         }
     })());
 
-    return (
-        <div className="Roll">
-            <div className="rollReport">
-                <label className="amendButton">
-                    <input type="checkbox" checked={isBeingAmended}
-                        onChange={(event) => {
-                            if (event.target.checked) {
-                                // A new roll (this one) was just marked for amendment. As a side 
-                                // effect, unmark all other rolls and update the input panel to match
-                                // this roll's parameters and flags.
-                                changeAmendMode(key);
-                            } else {
-                                // This roll was just cleared from amend mode.
-                                changeAmendMode(null);
-                            }
-                        }}
-                    />
-                    Amend
-                </label>
+    function ClipboardExportButton() {
+        // Two options for Markdown appearance. Might make configurable later.
+        const markdownStyles: Record<string, (lines: string[]) => string> = {
+            'mono': (lines => ['```', ...lines, '```'].join('\n')),
+            'quote': (lines => lines.map(line => '> ' + line).join('  \n')),
+        };
+        const style = markdownStyles['quote'];
 
-                <div className="rollCondition">
-                    {output.renderCondition(condition)}
-                </div>
+        async function writeToClipboard() {
+            const lines = output.exportResultAsPlainTextBlock(report, condition);
+            const text = style(lines) + '\n';
+            await navigator.clipboard.writeText(text);
+            // TODO: Show async feedback?
+        }
 
-                <div className="diceTray">
-                    {diceRows.map((row, rowIndex) => (
-                        <div className="diceRow" key={rowIndex}>
-                            {row.map((die, index) => (
-                                <span className="die" key={index}>
-                                    {output.renderDie(die, index, condition)}
-                                </span>
-                            ))}
-                        </div>
-                    ))}
-                </div>
+        return <div className="ClipboardExportButton">
+            <button onClick={writeToClipboard}>
+                Copy to Clipboard
+            </button>
+        </div>;
+    }
 
-                <div className="rollResult">
-                    {output.renderResult(report, condition)}
-                </div>
+    return (<div className="Roll">
+        <div className="rollReport">
+            <label className="amendButton">
+                <input type="checkbox" checked={isBeingAmended}
+                    onChange={(event) => {
+                        if (event.target.checked) {
+                            // A new roll (this one) was just marked for amendment. As a side 
+                            // effect, unmark all other rolls and update the input panel to match
+                            // this roll's parameters and flags.
+                            changeAmendMode(key);
+                        } else {
+                            // This roll was just cleared from amend mode.
+                            changeAmendMode(null);
+                        }
+                    }}
+                />
+                Amend
+            </label>
+
+            <div className="rollCondition">
+                {output.renderCondition(condition)}
             </div>
 
-            {
-                (probTableVisibility || probabilityDefaultVisibility !== 'hideButton') &&
-                <div className="rollProbability">
-                    {probTableVisibility
-                        ? (<div className="rollProbabilityDisplay">
-                            <button onClick={() => setProbTableVisibility(false)}>
-                                Hide Probability
-                            </button>
-                            <ProbabilityChart key={key} ruleSystem={ruleSystem} spec={spec} report={report} />
-                        </div>)
-                        : (<div className="rollProbabilityPrompt">
-                            <button onClick={() => setProbTableVisibility(true)}>
-                                Show Probability
-                            </button>
-                        </div>)
-                    }
-                </div>
-            }
+            <div className="diceTray">
+                {diceRows.map((row, rowIndex) => (
+                    <div className="diceRow" key={rowIndex}>
+                        {row.map((die, index) => (
+                            <span className="die" key={index}>
+                                {output.renderDie(die, index, condition)}
+                            </span>
+                        ))}
+                    </div>
+                ))}
+            </div>
+
+            <div className="rollResult">
+                {output.renderResult(report, condition)}
+            </div>
+
+            <ClipboardExportButton />
         </div>
-    );
+
+        {
+            (probTableVisibility || probabilityDefaultVisibility !== 'hideButton') &&
+            <div className="rollProbability">
+                {probTableVisibility
+                    ? (<div className="rollProbabilityDisplay">
+                        <button onClick={() => setProbTableVisibility(false)}>
+                            Hide Probability
+                        </button>
+                        <ProbabilityChart key={key} ruleSystem={ruleSystem} spec={spec} report={report} />
+                    </div>)
+                    : (<div className="rollProbabilityPrompt">
+                        <button onClick={() => setProbTableVisibility(true)}>
+                            Show Probability
+                        </button>
+                    </div>)
+                }
+            </div>
+        }
+    </div>);
 };
